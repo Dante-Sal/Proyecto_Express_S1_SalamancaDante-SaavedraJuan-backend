@@ -4,10 +4,11 @@ const app = express();
 
 const PORT = process.env.PORT;
 
+app.use(express.json());
 app.use(cors({ origin: `https://Dante-Sal.github.io` }));
 
 app.get(`/`, (req, res) => {
-    res.send(`<strong>200:</strong> Corriendo prueba en el puerto ${PORT}...`);
+    res.json({ status: `ok` });
 });
 
 app.listen(PORT, () => {
