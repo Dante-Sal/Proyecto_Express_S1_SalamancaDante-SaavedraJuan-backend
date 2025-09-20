@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-app.use(cors({ origin: `https://dante-sal.github.io/Proyecto_Express_S1_SalamancaDante-SaavedraJuan-frontend/` }));
+app.use(cors({ origin: `https://dante-sal.github.io` }));
 
 app.get(`/`, (req, res) => {
     res.json({ status: `ok` });
