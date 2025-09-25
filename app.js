@@ -1,13 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const { UserUtils } = require('./utils/userUtils');
+
 const app = express();
 
-const PORT = process.env.PORT;
+let PORT = parseInt(process.env.PORT?.trim());
+if (!Number.isFinite(PORT) || PORT < 3000 || PORT > 3999) PORT = 3103;
 
 app.use(express.json());
-app.use(cors({ origin: `https://dante-sal.github.io` }));
+app.use(cors({ origin: 'https://dante-sal.github.io' }));
+app.use('/', require('./routes'));
 
-app.listen(PORT, () => {
-    console.log(`Bienvenido a KarenFlix!`);
+app.listen(PORT, async () => {
+    console.log('Bienvenido a KarenFlix!');
+    await UserUtils.hashAll();
 });

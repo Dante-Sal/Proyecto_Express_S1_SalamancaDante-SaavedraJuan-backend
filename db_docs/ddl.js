@@ -35,6 +35,13 @@ db.createCollection("users", {
                 },
                 password_hash: {
                     bsonType: "string",
+                    //Insertar la siguiente línea en el JSON schema tras hashear las contraseñas
+                    //proveídas en dml.js
+                    
+                    //pattern: "^\\$2[aby]\\$(0[4-9]|1\\d|2\\d|3[01])\\$[./A-Za-z0-9]{53}$"
+                    
+                    //Para hashear la contraseña inicie la ejecución de la aplicación con el
+                    //comando: npm i && npm start
                 },
                 password_updated_at: {
                     bsonType: "date"
@@ -48,7 +55,7 @@ db.createCollection("users", {
                 },
                 avatar_url: {
                     bsonType: "string",
-                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(?:png|jpe?g|gif|webp|svg|bmp|ico|tiff)(?:\\?[^#\\s]*)?(?:#\\S*)?$"
+                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(png|jpe?g|gif|webp|svg|bmp|ico|tiff)(\\?[^#\\s]*)?(#\\S*)?$"
                 },
                 status_code: {
                     bsonType: "int",
@@ -188,11 +195,11 @@ db.createCollection("catalog", {
                 },
                 poster_url: {
                     bsonType: "string",
-                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(?:png|jpe?g|gif|webp|svg|bmp|ico|tiff)(?:\\?[^#\\s]*)?(?:#\\S*)?$"
+                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(png|jpe?g|gif|webp|svg|bmp|ico|tiff)(\\?[^#\\s]*)?(#\\S*)?$"
                 },
                 backdrop_url: {
                     bsonType: "string",
-                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(?:png|jpe?g|gif|webp|svg|bmp|ico|tiff)(?:\\?[^#\\s]*)?(?:#\\S*)?$"
+                    pattern: "^https?:\\/\\/[^\\s?#]+?\\.(png|jpe?g|gif|webp|svg|bmp|ico|tiff)(\\?[^#\\s]*)?(#\\S*)?$"
                 },
                 original_language: {
                     bsonType: "string",

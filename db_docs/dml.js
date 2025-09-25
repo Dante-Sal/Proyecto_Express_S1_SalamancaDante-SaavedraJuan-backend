@@ -2,6 +2,22 @@
 
 db.users.insertMany([
   {
+    _id: ObjectId('68d02fce69061087d1a0da9d'),
+    first_name: 'Valeria',
+    second_name: 'Andrea',
+    first_surname: 'Duarte',
+    second_surname: 'López',
+    email: 'valeria.duarte@karenflix.com',
+    username: 'valery_adl81',
+    password_hash: 'TheShining3151353*311#',
+    password_updated_at: new Date('2025-09-21T17:03:10.698Z'),
+    role: 'admin',
+    avatar_url: 'https://i.postimg.cc/XNHhZdnf/admin-purple.png',
+    status_code: 3929,
+    created_at: new Date('2025-09-21T17:03:10.698Z'),
+    updated_at: new Date('2025-09-21T17:03:10.698Z')
+  },
+  {
     _id: ObjectId('c9325b05e22f20244f58605e'),
     first_name: 'Paula',
     first_surname: 'Silva',
