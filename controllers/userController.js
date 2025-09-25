@@ -18,7 +18,12 @@ class UserController {
     };
 
     async signIn(req, res) {
-
+        try {
+            const response = await this.service.signIn(req.body);
+            res.status(response.status).json({ ok: true, message: 'success (access allowed: include token in private requests to authenticate)', token: response.token });
+        } catch (err) {
+            res.status(err.status ?? 500).json({ ok: false, error: err.message });
+        };
     };
 
     async editProfile(req, res) {

@@ -12,14 +12,14 @@ class UserRepository {
         return await collection.find({}, this.publicProjection).toArray();
     };
 
-    async listRole(role) {
-        const collection = await this.connection.connect('users');
-        return await collection.find({ role }, this.publicProjection).toArray();
-    };
-
     async listPasswords() {
         const collection = await this.connection.connect('users');
         return collection.find({}, { projection: { password_hash: 1 } });
+    };
+
+    async listRole(role) {
+        const collection = await this.connection.connect('users');
+        return await collection.find({ role }, this.publicProjection).toArray();
     };
 
     async count() {
@@ -40,6 +40,11 @@ class UserRepository {
     async findPublicByEmail(email) {
         const collection = await this.connection.connect('users');
         return await collection.findOne({ email }, this.publicProjection);
+    };
+
+    async findCredentialsByEmailStatusCode(email, status_code) {
+        const collection = await this.connection.connect('users');
+        return await collection.findOne({ email, status_code }, { projection: { email: 1, password_hash: 1, role: 1 } });
     };
 
     async findPublicByUsername(username) {

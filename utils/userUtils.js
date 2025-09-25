@@ -40,6 +40,12 @@ class UserUtils extends GeneralUtils {
         else return false;
     };
 
+    static isTimeString(value) {
+        const re = /^(0|[1-9][0-9]*)(m?s|m|h|d|w|y)?$/;
+        if (typeof value === 'string' && value.trim() !== '') return re.test(value.trim());
+        else return false;
+    };
+
     static isBcryptHash(value) {
         const re = /^\$2[aby]\$(0[4-9]|1\d|2\d|3[01])\$[./A-Za-z0-9]{53}$/;
         if (typeof value === 'string') return re.test(value);
@@ -50,6 +56,10 @@ class UserUtils extends GeneralUtils {
         let saltRounds = parseInt(process.env.SALT_ROUNDS?.trim());
         if (!Number.isFinite(saltRounds) || saltRounds < 4 || saltRounds > 31) saltRounds = 10;
         return await bcrypt.hash(password, saltRounds);
+    };
+
+    static async verify(plain, hash) {
+        return await bcrypt.compare(plain, hash);
     };
 
     static async hashAll() {

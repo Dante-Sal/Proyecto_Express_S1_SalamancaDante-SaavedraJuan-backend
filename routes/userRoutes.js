@@ -5,5 +5,6 @@ const users = Router();
 const ctrl = new UserController();
 
 users.post('/register', (req, res) => ctrl.register(req, res));
+users.post('/login', (req, res) => ctrl.signIn(req, res));
 
 module.exports = { users };
