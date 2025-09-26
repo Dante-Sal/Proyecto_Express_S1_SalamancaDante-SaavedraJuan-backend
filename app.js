@@ -8,7 +8,7 @@ const { specs } = require('./swagger/swagger');
 const app = express();
 
 let PORT = parseInt(process.env.PORT?.trim());
-if (!Number.isFinite(PORT) || PORT < 3000 || PORT > 3999) PORT = 3103;
+if (!Number.isFinite(PORT)) PORT = 3103;
 
 const allowed = ['https://dante-sal.github.io', 'http://127.0.0.1:5500', 'http://localhost:5500']
 
