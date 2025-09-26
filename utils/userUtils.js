@@ -13,7 +13,7 @@ class UserUtils extends GeneralUtils {
     };
 
     static isValidEmail(email) {
-        const re = /^(?!.*\.\.)([a-z0-9]|[a-z0-9][a-z0-9._+-]*[a-z0-9])@([a-z0-9]|[a-z0-9][a-z0-9.-]*[a-z0-9])\.[a-z]{2,}$/;
+        const re = /^(?!.*\.\.)([a-z0-9]|[a-z0-9][a-z0-9._+-]*[a-z0-9])@([a-z0-9]|[a-z0-9][a-z0-9.-]*[a-z0-9])\.[a-z]{2,}$/i;
         if (typeof email === 'string' && email.trim() !== '') return re.test(email.trim());
         else return false;
     };
