@@ -23,7 +23,7 @@ const options = {
 };
 
 app.use(cors(options));
-app.options('/(.*)', cors(options));
+app.use((req, res, next) => { if (req.method === 'OPTIONS') return res.sendStatus(204); next(); });
 app.use(express.json());
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use('/', require('./routes'));
