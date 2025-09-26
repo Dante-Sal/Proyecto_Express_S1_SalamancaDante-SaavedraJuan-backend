@@ -21,10 +21,13 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "semver": "^7.7.2",
+    "swagger": "^0.7.5",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ui": "^0.2.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "swagger-autogen": "^2.22.0"
   }
 }
