@@ -11,7 +11,7 @@ class UserController {
     async register(req, res) {
         try {
             const response = await this.service.register(req.body);
-            res.status(response.status).location(`/users/${response.data._id}`).json({ ok: true, message: 'success (user registered in the database)', insertedDocument: response.data, redirect: '/index.html' });
+            res.status(response.status).location(`/users/${response.data._id}`).json({ ok: true, message: 'Success (user registered in the database)', insertedDocument: response.data, redirect: '/index.html' });
         } catch (err) {
             res.status(err.status ?? 500).json({ ok: false, error: err.message });
         };
@@ -20,7 +20,7 @@ class UserController {
     async signIn(req, res) {
         try {
             const response = await this.service.signIn(req.body);
-            res.status(response.status).json({ ok: true, message: 'success (access allowed: include token in private requests to authenticate)', token: response.token });
+            res.status(response.status).json({ ok: true, message: 'Success (access allowed)', token: response.token });
         } catch (err) {
             res.status(err.status ?? 500).json({ ok: false, error: err.message });
         };
