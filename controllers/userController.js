@@ -23,7 +23,7 @@ class UserController {
 
             let expiresInMs = parseFloat(process.env.COOKIE_EXPIRES.trim());
             if (!Number.isFinite(expiresInMs) || expiresInMs < 0) expiresInMs = 0.1;
-            expiresInMs = expiresInMs * 24 * 60 * 60 * 1000;
+            expiresInMs = new Date(Date.now() + expiresInMs * 24 * 60 * 60 * 1000);
 
             const options = {
                 expires: expiresInMs,
