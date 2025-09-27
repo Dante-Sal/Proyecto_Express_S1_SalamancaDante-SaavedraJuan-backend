@@ -18,6 +18,7 @@ const options = {
     optionsSuccessStatus: 204
 };
 
+app.set('trust proxy', 1);
 app.use(cors(options));
 app.use((req, res, next) => { if (req.method === 'OPTIONS') return res.sendStatus(204); next(); });
 app.use(express.json());
