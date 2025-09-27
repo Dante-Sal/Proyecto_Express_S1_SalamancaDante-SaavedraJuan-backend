@@ -21,8 +21,9 @@ const options = {
 app.use(cors(options));
 app.use((req, res, next) => { if (req.method === 'OPTIONS') return res.sendStatus(204); next(); });
 app.use(express.json());
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use('/', require('./routes'));
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
+app.use((req, res) => res.status(404).json({ ok: false, error: `Not found (route ${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl} does not exist)` }));
 
 app.listen(parseInt(PORT), async () => {
     console.log('Bienvenido a KarenFlix!');
