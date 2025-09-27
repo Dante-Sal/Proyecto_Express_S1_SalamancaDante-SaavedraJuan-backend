@@ -3,8 +3,8 @@ const { MongoClient } = require('mongodb');
 
 class MongoDBConnection {
     constructor() {
-        this.client = new MongoClient(process.env.URI?.trim() ?? "mongodb://localhost:27017/");
-        this.database = process.env.DATABASE?.trim() ?? "database";
+        this.client = new MongoClient(process.env.URI?.trim() ?? 'mongodb://localhost:27017/');
+        this.database = process.env.DATABASE?.trim() ?? 'database';
     };
 
     async connect(collName) {

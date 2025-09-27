@@ -1,8 +1,12 @@
 const { Router } = require('express');
 const { users } = require('./userRoutes');
+const { catalog } = require('./catalogRoutes');
+const { genres } = require('./genreRoutes');
 
-const _users = Router();
+const _router = Router();
 
-_users.use('/users', users);
+_router.use('/users', users);
+_router.use('/catalog', catalog);
+_router.use('/genres', genres);
 
-module.exports = _users;
+module.exports = _router;

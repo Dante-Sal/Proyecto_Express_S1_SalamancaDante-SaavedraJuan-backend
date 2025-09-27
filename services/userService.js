@@ -55,7 +55,7 @@ class UserService {
 
     validateJWTparameters(secret, expiresIn) {
         if (!secret) UserUtils.throwError(400, 'Invalid request (undefined environment variable \'secret\')');
-        expiresIn = UserUtils.isTimeString(expiresIn) ? (Number.isFinite(parseInt(expiresIn.trim())) ? parseInt(expiresIn) : expiresIn) : '1h';
+        expiresIn = UserUtils.isTimeString(expiresIn) ? (/^[0-9]+$/.test(expiresIn.trim()) ? parseInt(expiresIn) : expiresIn) : '1h';
         return { secret, expiresIn };
     };
 
@@ -136,9 +136,9 @@ class UserService {
     async signIn(payload) {
         const { _id, role } = await this.verifyCredentials(payload);
         const { secret, expiresIn } = this.validateJWTparameters(process.env.JWT_SECRET, process.env.JWT_EXPIRES);
-        const token = jwt.sign({ _id, role }, secret, { expiresIn });
+        const token = jwt.sign({ _id }, secret, { expiresIn });
 
-        return { status: 200, token }
+        return { status: 200, token, role }
     };
 };
 

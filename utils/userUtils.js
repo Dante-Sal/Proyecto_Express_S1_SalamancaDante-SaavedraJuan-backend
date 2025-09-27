@@ -53,9 +53,9 @@ class UserUtils extends GeneralUtils {
     };
 
     static async hash(password) {
-        let saltRounds = parseInt(process.env.SALT_ROUNDS?.trim());
-        if (!Number.isFinite(saltRounds) || saltRounds < 4 || saltRounds > 31) saltRounds = 10;
-        return await bcrypt.hash(password, saltRounds);
+        let saltRounds = process.env.SALT_ROUNDS?.trim() ?? 'undefined';
+        if (!/^[0-9]+$/.test(saltRounds) || saltRounds < 4 || saltRounds > 31) saltRounds = 10;
+        return await bcrypt.hash(password, parseInt(saltRounds));
     };
 
     static async verify(plain, hash) {

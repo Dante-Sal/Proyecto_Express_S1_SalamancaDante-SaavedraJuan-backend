@@ -21,17 +21,20 @@ class UserController {
         try {
             const response = await this.service.signIn(req.body);
 
-            let expiresInMs = parseFloat(process.env.COOKIE_EXPIRES.trim());
-            if (!Number.isFinite(expiresInMs) || expiresInMs < 0) expiresInMs = 0.1;
-            expiresInMs = new Date(Date.now() + expiresInMs * 24 * 60 * 60 * 1000);
+            let expires = process.env.COOKIE_EXPIRES?.trim() ?? 'undefined';
+            if (!/^(0|[1-9][0-9]*)(\.[0-9]*)?$/.test(expires) || expires < 0) expires = 0.1;
+            expires = new Date(Date.now() + parseFloat(expires) * 24 * 60 * 60 * 1000);
 
             const options = {
-                expires: expiresInMs,
-                path: '/'
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+                path: '/',
+                expires
             };
 
             res.cookie('login', response.token, options);
-            res.status(response.status).json({ ok: true, message: 'Success (access allowed)', redirect: { admin: '/html/main_admin.html', user: '/html/main.html' } });
+            res.status(response.status).json({ ok: true, message: 'Success (access allowed)', role, redirect: { admin: '/html/main_admin.html', user: '/html/main.html' } });
         } catch (err) {
             res.status(err.status ?? 500).json({ ok: false, error: err.message });
         };
@@ -42,7 +45,14 @@ class UserController {
     };
 
     async logOut(req, res) {
+        res.clearCookie('login', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });
 
+        res.status(200).json({ ok: true, message: 'Success (logged out)', redirect: '/index.html' });
     };
 };
 
