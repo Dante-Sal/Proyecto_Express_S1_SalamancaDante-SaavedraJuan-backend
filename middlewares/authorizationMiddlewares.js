@@ -24,7 +24,7 @@ class Authorization {
             async (payload, done) => {
                 try {
                     const user = await this.repository.findById(payload._id);
-                    if (!user) return done(null, false, { message: 'Access denied (token authentication error)' });
+                    if (!user) return done(null, false);
                     return done(null, payload);
                 } catch (err) {
                     return done(err, false);
@@ -36,7 +36,19 @@ class Authorization {
     verifyToken(req, res, next) {
         return passport.authenticate('jwt', { session: false }, (err, user, info) => {
             if (err) return res.status(500).json({ ok: false, error: err.message });
-            if (!user) return res.status(401).json({ ok: false, error: info.message });
+            
+            if (!user) {
+                let error = 'Access denied (token authentication error)';
+
+                if (info) {
+                    if (info.message === 'No auth token') error = 'Access denied (no authentication token)';
+                    else if (info.message === 'TokenExpiredError') error = 'Access denied (authentication token has expired)';
+                    else if (info.message === 'JsonWebTokenError') error = 'Access denied (invalid authentication token)';
+                };
+
+                return res.status(401).json({ ok: false, error: info.message });
+            };
+
             req.user = user;
             next();
         })(req, res, next);
