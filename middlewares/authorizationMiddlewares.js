@@ -46,7 +46,7 @@ class Authorization {
                     else if (info.message === 'JsonWebTokenError') error = 'Access denied (invalid authentication token)';
                 };
 
-                return res.status(401).json({ ok: false, error: info.message, redirect: '/index.html' });
+                return res.status(401).json({ ok: false, error, redirect: '/index.html' });
             };
 
             req.user = user;
