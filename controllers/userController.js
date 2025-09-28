@@ -56,7 +56,7 @@ class UserController {
             else redirect = '/html/main_admin.html';
 
             res.status(200).json({ ok: true, message: 'Success (user data extracted from the database)', document, redirect });
-        } catch (err) { res.status(err.status ?? 500).json({ ok: false, error: err.message }); };
+        } catch (err) { res.status(err.status ?? 500).json({ ok: false, error: err.message, redirect: '/index.html' }); };
     };
 
     async editProfile(req, res) {
