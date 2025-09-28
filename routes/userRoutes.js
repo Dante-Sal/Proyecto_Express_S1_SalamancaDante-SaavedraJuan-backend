@@ -1,7 +1,9 @@
 const { Router } = require('express');
+const { Authorization } = require('../middlewares/authorizationMiddlewares');
 const { UserController } = require('../controllers/userController');
 
 const users = Router();
+const auth = new Authorization();
 const ctrl = new UserController();
 
 /**
@@ -345,7 +347,7 @@ const ctrl = new UserController();
  *                   error: "Internal server error"
  *                   status: 500
  */
-users.post('/register', (req, res) => ctrl.register(req, res));
+users.post('/register', auth.tryToVerifyToken, auth.public, ctrl.register);
 
 /**
  * @swagger
@@ -491,6 +493,8 @@ users.post('/register', (req, res) => ctrl.register(req, res));
  *                   error: "Internal server error"
  *                   status: 500
  */
-users.post('/login', (req, res) => ctrl.signIn(req, res));
+users.post('/login', auth.tryToVerifyToken, auth.public, ctrl.signIn);
+
+users.get('/me', auth.verifyToken, ctrl.me);
 
 module.exports = { users };

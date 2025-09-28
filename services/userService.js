@@ -54,8 +54,8 @@ class UserService {
     };
 
     validateJWTparameters(secret, expiresIn) {
-        if (!secret) UserUtils.throwError(400, 'Invalid request (undefined environment variable \'secret\')');
-        expiresIn = UserUtils.isTimeString(expiresIn) ? (/^[0-9]+$/.test(expiresIn.trim()) ? parseInt(expiresIn) : expiresIn) : '1h';
+        if (!secret) UserUtils.throwError(400, 'Invalid request (undefined environment variable \'JWT_SECRET\')');
+        expiresIn = UserUtils.isTimeString(expiresIn) ? (/^(?!^0(\.0+)?$)(0|[1-9][0-9]*)(\.[0-9]+)?$/.test(expiresIn.trim()) ? parseFloat(expiresIn) : expiresIn.trim()) : '30m';
         return { secret, expiresIn };
     };
 
@@ -96,10 +96,10 @@ class UserService {
 
         const statusCode = await this.searchDefaultStatus('active');
         const credentials = await this.repository.findCredentialsByEmailStatusCode(payload.email, statusCode);
-        if (!credentials) UserUtils.throwError(401, 'Invalid request (incorrect \'email\' or \'password\')');
+        if (!credentials) UserUtils.throwError(401, 'Access denied (incorrect \'email\' or \'password\')');
 
         const authorized = await UserUtils.verify(payload.password, credentials.password_hash);
-        if (!authorized) UserUtils.throwError(401, 'Invalid request (incorrect \'email\' or \'password\')');
+        if (!authorized) UserUtils.throwError(401, 'Access denied (incorrect \'email\' or \'password\')');
 
         return credentials;
     };
@@ -134,11 +134,11 @@ class UserService {
     };
 
     async signIn(payload) {
-        const { _id, role } = await this.verifyCredentials(payload);
-        const { secret, expiresIn } = this.validateJWTparameters(process.env.JWT_SECRET, process.env.JWT_EXPIRES);
+        const { _id } = await this.verifyCredentials(payload);
+        const { secret, expiresIn } = this.validateJWTparameters(process.env.JWT_SECRET, process.env.JWT_AND_COOKIE_EXPIRES);
         const token = jwt.sign({ _id }, secret, { expiresIn });
 
-        return { status: 200, token, role }
+        return { status: 200, token }
     };
 };
 

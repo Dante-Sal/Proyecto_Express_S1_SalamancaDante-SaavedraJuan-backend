@@ -1,9 +1,11 @@
 const { Router } = require('express');
+const { Authorization } = require('../middlewares/authorizationMiddlewares');
 const { GenreController } = require('../controllers/genreController');
 
 const genres = Router();
+const auth = new Authorization();
 const ctrl = new GenreController();
 
-genres.get('/', (req, res) => ctrl.list(req, res));
+genres.get('/', auth.verifyToken, ctrl.list);
 
 module.exports = { genres };

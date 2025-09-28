@@ -6,6 +6,10 @@ const { UserRepository } = require('../repositories/userRepository');
 class UserUtils extends GeneralUtils {
     static repository = new UserRepository();
 
+    static normalizeTimeString(value) {
+        return value.trim().replace(/\t+/g, ' ').replace(/(?!.*ss.*)((mseconds?)|(millis(ec)?(?!.*ond.*)s?))/gi, 'ms');
+    };
+
     static isValidName(name) {
         const re = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,50}$/
         if (typeof name === 'string' && name.trim() !== '') return re.test(name.trim());
@@ -41,9 +45,10 @@ class UserUtils extends GeneralUtils {
     };
 
     static isTimeString(value) {
-        const re = /^(0|[1-9][0-9]*)(m?s|m|h|d|w|y)?$/;
-        if (typeof value === 'string' && value.trim() !== '') return re.test(value.trim());
+        if (typeof value === 'string' && value.trim() !== '') value = this.normalizeTimeString(value);
         else return false;
+        const re = /^(?!^0([a-z ]+|(\.0+))?$)(0|[1-9][0-9]*)(\.[0-9]+)? *((m(illi)?)?s((ec(ond)?s?)?)|(m(in(utes?)?)?)|(h((ou)?rs?)?)|(d(ays?)?)|y((ea)?rs?)?)?$/i;
+        return re.test(value);
     };
 
     static isBcryptHash(value) {
@@ -54,7 +59,7 @@ class UserUtils extends GeneralUtils {
 
     static async hash(password) {
         let saltRounds = process.env.SALT_ROUNDS?.trim() ?? 'undefined';
-        if (!/^[0-9]+$/.test(saltRounds) || saltRounds < 4 || saltRounds > 31) saltRounds = 10;
+        if (!/^[0-9]+$/.test(saltRounds) || saltRounds < 4 || saltRounds > 31) saltRounds = Math.floor(Math.random() * (13 - 10 + 1)) + 10;
         return await bcrypt.hash(password, parseInt(saltRounds));
     };
 
