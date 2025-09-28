@@ -497,4 +497,6 @@ users.post('/login', auth.tryToVerifyToken, auth.public, ctrl.signIn);
 
 users.get('/me', auth.verifyToken, ctrl.me);
 
+users.get('/logout', ctrl.logOut);
+
 module.exports = { users };
