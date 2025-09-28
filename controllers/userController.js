@@ -50,7 +50,7 @@ class UserController {
     async me(req, res) {
         try {
             const document = await this.repository.findPublicById(req.user._id);
-            res.status(200).json({ ok: true, message: 'Success (user data extracted from the database)', document });
+            res.status(200).json({ ok: true, message: 'Success (user data extracted from the database)', document, redirect: { user: '/html/main.html', admin: '/html/main_admin.html' } });
         } catch (err) { res.status(err.status ?? 500).json({ ok: false, error: err.message }); };
     };
 
