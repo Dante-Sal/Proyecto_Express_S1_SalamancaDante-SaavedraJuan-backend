@@ -43,7 +43,7 @@ class UserController {
             };
 
             res.cookie('login', response.token, options);
-            res.status(response.status).json({ ok: true, message: 'Success (access allowed)' });
+            res.status(response.status).json({ ok: true, message: 'Success (access allowed)', redirect: response.redirect });
         } catch (err) { res.status(err.status ?? 500).json({ ok: false, error: err.message }); };
     };
 

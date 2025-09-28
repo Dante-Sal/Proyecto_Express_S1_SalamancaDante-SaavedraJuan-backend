@@ -134,11 +134,12 @@ class UserService {
     };
 
     async signIn(payload) {
-        const { _id } = await this.verifyCredentials(payload);
+        const { _id, role } = await this.verifyCredentials(payload);
         const { secret, expiresIn } = this.validateJWTparameters(process.env.JWT_SECRET, process.env.JWT_AND_COOKIE_EXPIRES);
         const token = jwt.sign({ _id }, secret, { expiresIn });
+        const redirect = role === 'user' ? '/html/main.html' : '/html/main_admin.html'
 
-        return { status: 200, token }
+        return { status: 200, token, redirect }
     };
 };
 
