@@ -6,6 +6,6 @@ const genres = Router();
 const auth = new Authorization();
 const ctrl = new GenreController();
 
-genres.get('/', auth.verifyToken, ctrl.list);
+genres.get('/', ctrl.list);
 
 module.exports = { genres };
