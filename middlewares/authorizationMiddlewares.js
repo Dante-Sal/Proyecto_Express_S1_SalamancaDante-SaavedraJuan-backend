@@ -42,8 +42,8 @@ class Authorization {
 
                 if (info) {
                     if (info.message === 'No auth token') error = 'Access denied (no authentication token)';
-                    else if (info.message === 'TokenExpiredError') error = 'Access denied (authentication token has expired)';
-                    else if (info.message === 'JsonWebTokenError') error = 'Access denied (invalid authentication token)';
+                    else if (info.name === 'TokenExpiredError') error = 'Access denied (authentication token has expired)';
+                    else if (info.name === 'JsonWebTokenError') error = 'Access denied (invalid authentication token)';
                 };
 
                 return res.status(401).json({ ok: false, error, redirect: '/index.html' });
