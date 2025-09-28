@@ -4,7 +4,7 @@ const { MongoDBConnection } = require('../config/db');
 class UserRepository {
     constructor() {
         this.connection = new MongoDBConnection();
-        this.publicProjection = { projection: { password_hash: 0, password_updated_at: 0, status_code: 0, created_at: 0, updated_at: 0 } };
+        this.publicProjection = { projection: { password_hash: 0, password_updated_at: 0, created_at: 0, updated_at: 0 } };
     };
 
     async list() {
