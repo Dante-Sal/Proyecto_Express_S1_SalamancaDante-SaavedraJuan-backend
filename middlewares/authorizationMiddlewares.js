@@ -36,7 +36,7 @@ class Authorization {
     verifyToken(req, res, next) {
         return passport.authenticate('jwt', { session: false }, (err, user, info) => {
             if (err) return res.status(500).json({ ok: false, error: err.message });
-            
+
             if (!user) {
                 let error = 'Access denied (token authentication error)';
 
@@ -46,7 +46,7 @@ class Authorization {
                     else if (info.message === 'JsonWebTokenError') error = 'Access denied (invalid authentication token)';
                 };
 
-                return res.status(401).json({ ok: false, error: info.message });
+                return res.status(401).json({ ok: false, error: info.message, redirect: '/index.html' });
             };
 
             req.user = user;
@@ -63,7 +63,7 @@ class Authorization {
     };
 
     public(req, res, next) {
-        if (req.user) return res.status(409).json({ ok: false, error: 'Conflict (user already signed in, it is not possible to access resources specific to anonymity)' });
+        if (req.user) return res.status(409).json({ ok: false, error: 'Conflict (user already signed in, it is not possible to access resources specific to anonymity)', redirect: { user: '/html/main.html', admin: '/html/main_admin.html' } });
         next();
     };
 
