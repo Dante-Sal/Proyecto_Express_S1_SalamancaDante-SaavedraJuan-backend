@@ -1,12 +1,11 @@
 const { Router } = require('express');
-const { Authorization } = require('../middlewares/authorizationMiddlewares');
+const { RateLimiting } = require('../config/rateLimiting');
 const { CatalogController } = require('../controllers/catalogController');
 
 const catalog = Router();
-const auth = new Authorization();
 const ctrl = new CatalogController();
 
-catalog.get('/', ctrl.filter);
-catalog.get('/:code', ctrl.findByCode);
+catalog.get('/', RateLimiting.catalogFilterLimiter, ctrl.filter);
+catalog.get('/:code', RateLimiting.catalogfindByCodeLimiter, ctrl.findByCode);
 
 module.exports = { catalog };

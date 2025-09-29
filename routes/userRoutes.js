@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { RateLimiting } = require('../config/rateLimiting');
 const { Authorization } = require('../middlewares/authorizationMiddlewares');
 const { UserController } = require('../controllers/userController');
 
@@ -347,7 +348,7 @@ const ctrl = new UserController();
  *                   error: "Internal server error"
  *                   status: 500
  */
-users.post('/register', auth.tryToVerifyToken, auth.public, ctrl.register);
+users.post('/register', auth.tryToVerifyToken, auth.public, RateLimiting.registerLimiter, ctrl.register);
 
 /**
  * @swagger
@@ -493,10 +494,10 @@ users.post('/register', auth.tryToVerifyToken, auth.public, ctrl.register);
  *                   error: "Internal server error"
  *                   status: 500
  */
-users.post('/login', auth.tryToVerifyToken, auth.public, ctrl.signIn);
+users.post('/login', auth.tryToVerifyToken, auth.public, RateLimiting.loginLimiter, ctrl.signIn);
 
-users.get('/me', auth.verifyToken, ctrl.me);
+users.get('/me', auth.verifyToken, RateLimiting.meLimiter, ctrl.me);
 
-users.get('/logout', ctrl.logOut);
+users.get('/logout', RateLimiting.logoutLimiter, ctrl.logOut);
 
 module.exports = { users };
