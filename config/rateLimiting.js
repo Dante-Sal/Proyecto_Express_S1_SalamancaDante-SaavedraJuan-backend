@@ -4,49 +4,50 @@ const standardHeaders = true;
 const legacyHeaders = false;
 const message = 'Rate limit reached (no more requests can be sent)';
 const keyGeneratorByUser = (req) => req.user?._id ?? req.ip;
-const keyGeneratorByEmail = (req) => req.body?.email ?? req.ip;
+const keyGeneratorByEmail = (req) => (req.body?.email && String(req.body.email).toLowerCase().trim()) ?? req.ip;
+const skip = (req) => req.method === 'OPTIONS';
 
 class RateLimiting {
     static registerLimiter = rateLimit({
-        windowMs: 60 * 60 * 1000, max: 3,
+        windowMs: 60 * 60 * 1000, limit: 3,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByEmail, skip
     });
 
     static loginLimiter = rateLimit({
-        windowMs: 15 * 60 * 1000, max: 5,
+        windowMs: 15 * 60 * 1000, limit: 5,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByEmail
+        message, keyGenerator: keyGeneratorByEmail, skip
     });
 
     static meLimiter = rateLimit({
-        windowMs: 60 * 1000, max: 60,
+        windowMs: 60 * 1000, limit: 60,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByUser, skip
     });
 
     static logoutLimiter = rateLimit({
-        windowMs: 60 * 1000, max: 30,
+        windowMs: 60 * 1000, limit: 30,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByUser, skip
     });
 
     static catalogFilterLimiter = rateLimit({
-        windowMs: 60 * 1000, max: 60,
+        windowMs: 60 * 1000, limit: 60,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByUser, skip
     });
 
     static catalogfindByCodeLimiter = rateLimit({
-        windowMs: 60 * 1000, max: 180,
+        windowMs: 60 * 1000, limit: 180,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByUser, skip
     });
 
     static genreListLimiter = rateLimit({
-        windowMs: 60 * 1000, max: 300,
+        windowMs: 60 * 1000, limit: 300,
         standardHeaders, legacyHeaders,
-        message, keyGenerator: keyGeneratorByUser
+        message, keyGenerator: keyGeneratorByUser, skip
     });
 };
 
