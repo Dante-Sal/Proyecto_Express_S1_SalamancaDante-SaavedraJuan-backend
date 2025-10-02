@@ -8,15 +8,15 @@ class ReviewController {
     };
 
     load(id) {
-        if (!fs.existsSync(`../cliente_${id}.json`)) {
-            fs.writeFileSync(`../cliente_${id}.json`, `[]`);
+        if (!fs.existsSync(`../Proyecto_Express_S1_SalamancaDante-SaavedraJuan-backend/exports/review_${id}.csv`)) {
+            fs.writeFileSync(`../Proyecto_Express_S1_SalamancaDante-SaavedraJuan-backend/exports/review_${id}.csv`, `[]`);
         };
-        const data = fs.readFileSync(`../cliente_${id}.json`);
+        const data = fs.readFileSync(`../Proyecto_Express_S1_SalamancaDante-SaavedraJuan-backend/exports/review_${id}.csv`);
         return JSON.parse(data);
     };
 
     save(id, data) {
-        fs.writeFileSync(`../cliente_${id}.json`, JSON.stringify(data));
+        fs.writeFileSync(`../Proyecto_Express_S1_SalamancaDante-SaavedraJuan-backend/exports/review_${id}.csv`, JSON.stringify(data));
     };
 
     async generateFile(req, res) {
